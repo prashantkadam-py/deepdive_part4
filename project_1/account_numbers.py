@@ -5,7 +5,7 @@ class Account:
     
     transaction_id = itertools.count(100)
 
-    def __init__(self, account_number, first_name, last_name, timezone=None):
+    def __init__(self, account_number, first_name, last_name, timezone=None, initial_balance=0):
 
         self._account_number = account_number
         self.first_name = first_name
@@ -15,6 +15,9 @@ class Account:
             timezone = TimeZone('UTC', 0, 0)
 
         self.timezone = timezone
+
+        self._balance = float(initial_balance)
+
 
     @property
     def account_number(self):
@@ -57,10 +60,10 @@ class Account:
 
         self._timezone = value
 
-
-
-
-
+    @property
+    def balance(self):
+        return self._balance
+    
 if __name__ == "__main__":
     #a1 = Account(1234, None, None)
     #a1.first_name
@@ -72,4 +75,10 @@ if __name__ == "__main__":
     
     print(a2.timezone)
 
-    a3 = Account(5467, "Jamie", "Lannister", "-7:00")
+    #a3 = Account(5467, "Jamie", "Lannister", "-7:00")
+    
+    a4 = Account(5467, "Cersei", "Lannister", initial_balance=100)
+    print(a4.balance)
+
+    a2.balance = 50
+
