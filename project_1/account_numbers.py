@@ -1,6 +1,10 @@
 import itertools
 from timezone import TimeZone
 import numbers
+from datetime import datetime
+from collections import namedtuple
+
+Confirmation = namedtuple("Confirmation", "account_number, transaction_code, transaction_id, time_utc, time")
 
 class Account:
     
@@ -80,6 +84,40 @@ class Account:
 
         cls._interest_rate = value
 
+    
+    def generate_confirmation_code(self, transaction_code):
+        dt_str = datetime.utcnow().strftime("%Y%m%d%H%M%S")
+        confirmation_code = f"{transaction_code}-{self.account_number}-{dt_str}-{next(Account.transaction_id)}"
+        return confirmation_code
+
+    def make_transactions(self):
+        return self.generate_confirmation_code("dummy")
+
+
+    @staticmethod
+    def parse_confirmation_code(confirmation_code, preferred_time_zone=None):
+        parts = confirmation_code.split("-")
+        
+        if len(parts) !=4:
+            raise ValueError("Invalid Confirmation Code.")
+
+        transaction_code, account_number, raw_dt_utc, transaction_id = parts
+
+        try:
+            dt_utc = datetime.strptime(raw_dt_utc, "%Y%m%d%H%M%S")
+        except ValueError as ex:
+            raise ValueError("Invalid Transction Datetime.") from ex
+
+        if preferred_time_zone is None:
+            preferred_time_zone = TimeZone("UTC", 0, 0)
+
+        if not isinstance(preferred_time_zone, TimeZone):
+            raise ValueError("Invalid Timezone specified.")
+
+        dt_preferred = dt_utc + preferred_time_zone.offset
+        dt_preferred_str = f"{dt_preferred.strftime('%Y-%m-%d %H:%M:%S')} ({preferred_time_zone.name})"
+
+        return Confirmation(account_number, transaction_code, transaction_id, dt_utc.isoformat(), dt_preferred_str)
 
 if __name__ == "__main__":
     #a1 = Account(1234, None, None)
@@ -103,4 +141,7 @@ if __name__ == "__main__":
     Account.set_interest_rate(10)
     print(Account.get_interest_rate())
 
+    confirmation_code = a2.make_transactions()
+    print(confirmation_code)
 
+    print(Account.parse_confirmation_code(confirmation_code))
