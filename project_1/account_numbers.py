@@ -10,6 +10,12 @@ class Account:
     
     transaction_id = itertools.count(100)
     _interest_rate = 0.5
+    _transaction_codes = {
+            "deposit" : "D",
+            "withdraw" : "W",
+            "interest" : "I",
+            "rejected" : "X"
+            }
 
     def __init__(self, account_number, first_name, last_name, timezone=None, initial_balance=0):
 
@@ -119,10 +125,56 @@ class Account:
 
         return Confirmation(account_number, transaction_code, transaction_id, dt_utc.isoformat(), dt_preferred_str)
 
+    @staticmethod
+    def validate_real_number(value, min_value=None):
+        
+        if not isinstance(value, numbers.Real):
+            raise ValueError("Value must be a real number.")
+
+        if min_value is not None and value < min_value:
+            raise ValueError(f"Value must be atleast {min_value}")
+
+        return value
+
+
+    def deposit(self, value):
+        value = Account.validate_real_number(value, min_value=0.1)
+        transaction_code = Account._transaction_codes["deposit"]
+        conf_code = self.generate_confirmation_code(transaction_code)
+        self._balance += value 
+        return conf_code
+
+
+    def withdraw(self, value):
+        value = Account.validate_real_number(value, min_value=0.1)
+        
+        accepted = False
+        if self.balance - value < 0:
+            transaction_code = Account._transaction_codes["rejected"]
+        else:
+            transaction_code = Account._transaction_codes["withdraw"]
+            accepted = True
+
+        conf_code = self.generate_confirmation_code(transaction_code)
+    
+        if accepted:
+            self._balance -= value
+
+        return conf_code
+        
+
+    def pay_interest(self):
+        interest = self.balance * Account.get_interest_rate() / 100
+        transaction_code = Account._transaction_codes["interest"]
+        conf_code = self.generate_confirmation_code(transaction_code)
+        self._balance += interest
+        return conf_code
+
+
 if __name__ == "__main__":
     #a1 = Account(1234, None, None)
     #a1.first_name
-    a2 = Account(1234, "Tyrion", "Lannister")
+    a2 = Account(1234, "Tyrion", "Lannister", initial_balance=100)
     print(a2.first_name)
     print(a2.last_name)
 
@@ -145,3 +197,13 @@ if __name__ == "__main__":
     print(confirmation_code)
 
     print(Account.parse_confirmation_code(confirmation_code))
+
+    print("Transactions.........")
+    print(a2.balance)
+    print("deposit", a2.deposit(200))
+    print("balance", a2.balance)
+    print("pay interest", a2.pay_interest())
+    print("balance", a2.balance)
+    print("withdraw", a2.withdraw(50))
+    print("balance", a2.balance)
+
