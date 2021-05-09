@@ -1,9 +1,11 @@
 import itertools
 from timezone import TimeZone
+import numbers
 
 class Account:
     
     transaction_id = itertools.count(100)
+    _interest_rate = 0.5
 
     def __init__(self, account_number, first_name, last_name, timezone=None, initial_balance=0):
 
@@ -63,7 +65,22 @@ class Account:
     @property
     def balance(self):
         return self._balance
-    
+
+    @classmethod
+    def get_interest_rate(cls):
+        return cls._interest_rate
+
+    @classmethod
+    def set_interest_rate(cls, value):
+        if not isinstance(value, numbers.Real):
+            raise ValueError("Interest Rate must be a Real Number.")
+
+        if value < 0:
+            raise ValueError("Interest Rate cannot be negative number.")
+
+        cls._interest_rate = value
+
+
 if __name__ == "__main__":
     #a1 = Account(1234, None, None)
     #a1.first_name
@@ -80,5 +97,10 @@ if __name__ == "__main__":
     a4 = Account(5467, "Cersei", "Lannister", initial_balance=100)
     print(a4.balance)
 
-    a2.balance = 50
+    #a2.balance = 50
+
+    print(Account.get_interest_rate())
+    Account.set_interest_rate(10)
+    print(Account.get_interest_rate())
+
 
