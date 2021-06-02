@@ -77,5 +77,8 @@
           p.name = "Alex"
           p.\_\_dict\_\_ = {"age" : 18}
   
-          
+## Section 7 : Project 3
+   Inventory App
+   - Implemented inventory app for CPU, HDD, SSD.
+  
       
