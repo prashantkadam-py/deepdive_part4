@@ -97,4 +97,5 @@
     - data descriptors
     
   ### Example :
+    - Descriptor examples are implemented inside descriptor folder.  
     
