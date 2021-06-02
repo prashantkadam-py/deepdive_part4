@@ -44,7 +44,7 @@
   ### Slots : 
       - Instance attributes are normally stored in a local dict of class instances.
       p = PointClass(0, 0)
-      p.\_\_dict\_\_ --> {x : 0, y : 0}
+      p.__dict__ --> {x : 0, y : 0}
       
       - Slots can tell python that a class will contain only certain pre-determined aatributes. Python will use more compact data structure to store attribute values.
       - Slots are memory saving even compared to key sharing dictionaries, can be substantial.
@@ -56,7 +56,7 @@
       - If we create a base class with slots and extend it.
       - Subclasses will use slots from the parents (if present) and will also use an instance dictionary.
       - What if we want our subclass to also just use slots ? 
-          - specify \_\_slots\_\_ in the subclass.
+          - specify __slots__ in the subclass.
           - but only specify the additional ones.
           - don't respecify slots from up the inheritance chain. (It increases memory usage also hides attribute defined in the parent class)
       
@@ -73,9 +73,9 @@
       - instance dictionary can add attributes arbitrarily at run time.
       - slots provide faster memory access and less memory.
       - can we use both : Yes
-          - \_\_slots\_\_ == "name" , "\_\_dict\_\_"
+          - __slots__ == "name" , __dict__
           p.name = "Alex"
-          p.\_\_dict\_\_ = {"age" : 18}
+          p.__dict__ = {"age" : 18}
   
 ## Section 7 : Project 3
    Inventory App
