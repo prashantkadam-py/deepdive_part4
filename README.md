@@ -87,11 +87,18 @@
    (videos : 87_107)
    
    ### Protocol :
-   - __get__ used to get attribute value --> p.x
-   - __set__ used to set attribute value --> p.x = 100
-   - __delete__ used to delete attr value --> del p.x
+   - __get__ 
+        used to get attribute value --> p.x
+   
+   - __set__ 
+       used to set attribute value --> p.x = 100
+   
+   - __delete__ 
+       used to delete attr value --> del p.x
+   
    - __set_name__ 
-
+       this method gets called when the descriptor is first instantiated.
+       
   ### Categories :
     - non data descriptors
     - data descriptors
@@ -99,3 +106,44 @@
   ### Example :
     - Descriptor examples are implemented inside descriptor folder.  
     
+  ### How to store attribute value
+      - Approach 1 : create ditionary in the data descriptor.
+          - eg. self.data {instance : value} 
+          - drawback : on deleting instance object is not garbage collected. 
+            eg. p = Point2D()
+                p.x = 100
+                del p 
+                
+      - Approach 2 : use dictionary with weak reference.
+        - drawback : 
+            - technique only works for hashable objects.
+            - cannot use object (instance) as key use id(instance)
+            - drawback of id(instance) - id reuse, obj finalization entry still remains in dictionary.
+       
+       - Approach 3 : weakref.ref and callback functionality
+            - use regular dictionary
+            eg.  self.data = {id(instance) : (weakref.ref(instance, callbackfunc), value)}
+            check example in descriptor/aaproach3_97.py
+       
+       - Approach 4 : use instance dict
+          eg. instance.__dict__[self.property_name] = value
+          check example in descriptor/approach4_99.py
+          
+   #### Strong and Weak references
+    - Strong reference eg.
+      p1 = Person()
+      p2 = p1                     p1 ===> obj <=== p2
+      del p1 --> removes p1 pointer from obj 
+      del p2 --> no more strong ref for obj. obj will be garbage collected by python.
+      
+    - Weak reference eg.
+      p1 = Person()
+      p2 = weakref.ref(p1)
+      
+      p2 is callable
+      p3 = p2() --> this creates strong ref to the obj.
+      weak ref does not affect the ref count.
+      p1 ===> obj <--- p2
+      del p1 ---> no more strong ref for obj hence it is now garbage collected by python.
+      
+      
