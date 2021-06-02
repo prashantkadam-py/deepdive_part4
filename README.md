@@ -78,7 +78,23 @@
           p.__dict__ = {"age" : 18}
   
 ## Section 7 : Project 3
+   (videos : 80_86)
+   
    Inventory App
    - Implemented inventory app for CPU, HDD, SSD.
-  
-      
+
+## Section 8 : Descriptors
+   (videos : 87_107)
+   
+   ### Protocol :
+   - __get__ used to get attribute value --> p.x
+   - __set__ used to set attribute value --> p.x = 100
+   - __delete__ used to delete attr value --> del p.x
+   - __set_name__ 
+
+  ### Categories :
+    - non data descriptors
+    - data descriptors
+    
+  ### Example :
+    
