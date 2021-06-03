@@ -146,4 +146,40 @@
       p1 ===> obj <--- p2
       del p1 ---> no more strong ref for obj hence it is now garbage collected by python.
       
+  ### Property Lookup Resolution and Descriptors
+  
+  - Class can have instance dictionary __dict__.
+    eg. obj.x = value 
+    Does it use __dict__ entry or the descriptor ?
+    It depends on whether the descriptor is a data or non data descriptor.
+    
+  ### Data Descriptor 
+    - always overwrite the instance dictionary (by default) can overwrite this behavior.
+    
+    class Myclass:
+      prop = DataDescriptor()
+      
+    m = Myclass()
+    m.prop = 1 
+    m.prop ---> 1
+    m.__dict__["prop"] = 2
+    m.prop ---> 1
+    m.prop = 3
+    m.prop = 3 ---> modifies the property value not the dictionary entry.
+    
+ ### Non Data Descriptor
+   - looks in the instance dictionary first. If not present, uses the data descriptor.
+    
+    class Myclass:
+      prop = NonDataDescriptor()
+      
+    m = Myclass()
+    m.prop ---> prop is not in m.__dict__ so calls __get__
+    
+    m.prop = 100 ---> prop is a non data descriptor
+                 ----> m.__dict__ is now {"prop" : 100}
+    m.prop ---> prop is in m.__dict__, so uses that value.
+    
+    
+      
       
