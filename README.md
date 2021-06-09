@@ -287,3 +287,18 @@
       code that a;ways executes
   else:      <--- appear 0 or 1 time (allowed only if except clause is present)
       code that executes if try terminates normally
+      
+  ### Raising Exception
+    - eg. raise ValueError()
+    - __init__ can handle *args
+    
+  ### Reraising Exception
+    try:
+      
+    except:
+      bare Except
+      log()
+      raise 
+   
+  ### Custom Exceptions
+  - refer exception_example folder
