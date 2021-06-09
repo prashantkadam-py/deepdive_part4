@@ -257,3 +257,48 @@
   a 1 0 []
   b 1 1 [100]
   c 1 2 [100, 100]
+  
+## Exceptions
+  - Exceptions are not just Errors.
+  
+  ### Python's Exception Hierarchy
+  BaseException
+      SystemExit         (raised on sys.exit())
+      KeyboardInterrupt  (raised on ctrl + c example)
+      GeneratorExit      (raised on generator or coroutine is closed)
+      Exception          (everything else)
+  
+  ### Direct Subclasses of Exception include :
+    - ArithmeticError -- (FloatingPointError, ZeroDivisionError)
+    - AttributeError  
+    - LookupError     -- (IndexError, KeyError)
+    - SyntaxError
+    - RuntimeError
+    - TypeError
+    - ValueError
+    - and more
+    
+  ### Handling Exception
+  try:       <--- required 
+      code
+  except:    <--- may appear 0 or more times (as ex is optional, ExceptionType is also optional)   
+      code
+  finally:   <--- appears 0 or 1 time 
+      code that a;ways executes
+  else:      <--- appear 0 or 1 time (allowed only if except clause is present)
+      code that executes if try terminates normally
+      
+  ### Raising Exception
+    - eg. raise ValueError()
+    - __init__ can handle *args
+    
+  ### Reraising Exception
+    try:
+      
+    except:
+      bare Except
+      log()
+      raise 
+   
+  ### Custom Exceptions
+  - refer exception_example folder
