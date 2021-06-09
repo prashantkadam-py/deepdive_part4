@@ -233,6 +233,7 @@
   ### Properties in Enum
   
     - Visit enumerations_example folder.
+  
   ### Member Truthyness
     - By default every member of an enum is truthy irrespective of the member value.
     
@@ -243,4 +244,16 @@
       def __bool__(self):
           return bool(self.value)
           
+  ### Automatic Values
+  class Number(Enum):
+    def __generate_next_value(name, start, count, last_values):
+      print(name, start, count, last_values)
+      return 100
+      
+    a = enum.auto()
+    b = enum.auto()
+    c = enum.auto()
           
+  a 1 0 []
+  b 1 1 [100]
+  c 1 2 [100, 100]
