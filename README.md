@@ -180,6 +180,67 @@
                  ----> m.__dict__ is now {"prop" : 100}
     m.prop ---> prop is in m.__dict__, so uses that value.
     
+## Enumerations
+
+  - have an unique names
+  - have an associated constant value
+  - lookup member by name
+  - lookup member by value 
+  - sometimes we need multiple symbols to refer to the same thing.
+
+  ### Terminology
+    class Color(Enum):
+      RED = 1
+      GREEN = 2
+      BLUE = 3
+
+    - Color is called enumeration.
+    - Color.RED is called an enumeration member.
+    - members have associated values.
+    - the type of member the enumeration it belongs to.
+    - members are hashable can be used as keys in dictionary.
+    - enumerations are iterables.
+    - definition order is preserved.
+
+  ### Constant Members and Constant Values
+    - Once an enumeration has been declared member list is immutable.
+    - member values are immutable.
+    - cannot be subclassed unless it contains no members.
+
+  ### Aliases
+    - We still have unique members but we now also have aliases.
+
+  ### Ensure unique values
+      @enum.unique
+  
+  ### Customizing and Extending
+    - Enums are classes. Class attributes become instance of that class.
+    - We can define functions in the enumeration class. Become bound methods called from a member.
+    - enumeration are classes and they can be extended BUT only if they do not contain any members.
+    - create base enum with functionality (methods) use it as base class for other enumerations that define their members.
     
+    class OrderedEnum(Enum):
       
+      def __lt__(self, other):
+        #code 
+    
+    class Number(OrderedEnum):
+      #members
       
+    class Dimension(OrderedEnum):
+      #members
+    
+  ### Properties in Enum
+  
+    - Visit enumerations_example folder.
+  ### Member Truthyness
+    - By default every member of an enum is truthy irrespective of the member value.
+    
+    class State(Enum):
+      READY = 1
+      BUSY = 0
+        
+      def __bool__(self):
+          return bool(self.value)
+          
+          
